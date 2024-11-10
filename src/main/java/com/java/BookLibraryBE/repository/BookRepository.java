@@ -1,13 +1,15 @@
 package com.java.BookLibraryBE.repository;
 
 import com.java.BookLibraryBE.entity.Book;
-import com.java.BookLibraryBE.entity.BookDTO;
+import com.java.BookLibraryBE.entity.BookRequest;
+import com.java.BookLibraryBE.entity.BookResponse;
 
 import java.util.List;
 
 public interface BookRepository {
-    Book saveBook(Book book);
-    Book updateBook(Book book);
-    String deleteById(int maSach);
-    List<BookDTO> getBooksByCondition(Book searchBookCondition);
+    String saveBook(BookRequest book);
+    String updateBook(BookRequest book);
+    String deleteById(int id);
+    Book getBookById(int id);
+    List<BookResponse> getBooksByCondition(BookRequest searchBookCondition);
 }
