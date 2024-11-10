@@ -1,9 +1,10 @@
 package com.java.BookLibraryBE.utility;
 
 import com.java.BookLibraryBE.entity.Book;
+import com.java.BookLibraryBE.entity.BookRequest;
 
 public class Utility {
-    public static String searchSqlQuery(Book searchBookCondition) {
+    public static String searchSqlQuery(BookRequest searchBookCondition) {
         StringBuilder searchQuery = new StringBuilder("SELECT ");
         searchQuery.append("SA.MA_SACH, SA.TEN_SACH, SA.TAC_GIA, NN.NGON_NGU, ")
                 .append("TL.THE_LOAI, SA.NAM_XUAT_BAN, TT.TRANG_THAI, SA.GIOI_THIEU ")
@@ -29,6 +30,18 @@ public class Utility {
         if (searchBookCondition.getNamXuatBan() != 0) {
             searchQuery.append(" AND SA.NAM_XUAT_BAN = ");
             searchQuery.append(searchBookCondition.getNamXuatBan());
+        }
+        if (searchBookCondition.getMaNgonNgu() != 0) {
+            searchQuery.append(" AND SA.MA_NGON_NGU = ");
+            searchQuery.append(searchBookCondition.getMaNgonNgu());
+        }
+        if (searchBookCondition.getMaTheLoai() != 0) {
+            searchQuery.append(" AND SA.MA_THE_LOAI = ");
+            searchQuery.append(searchBookCondition.getMaTheLoai());
+        }
+        if (searchBookCondition.getMaTrangThai() > -1) {
+            searchQuery.append(" AND SA.MA_TRANG_THAI = ");
+            searchQuery.append(searchBookCondition.getMaTrangThai());
         }
         String result = searchQuery.toString();
         System.out.println(result);
