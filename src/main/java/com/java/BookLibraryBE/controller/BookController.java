@@ -34,15 +34,15 @@ public class BookController {
 
     @GetMapping("/books")
     public List<BookResponse> getBooksByCondition(
-            @RequestParam(value = "maSach", defaultValue = "0") int maSach,
-            @RequestParam(value = "tenSach", defaultValue = "") String tenSach,
-            @RequestParam(value = "tacGia", defaultValue = "") String tacGia,
-            @RequestParam(value = "namXuatBan", defaultValue = "0") int namXuatBan,
-            @RequestParam(value = "maNgonNgu", defaultValue = "0") int maNgonNgu,
-            @RequestParam(value = "maTheLoai", defaultValue = "0") int maTheLoai,
-            @RequestParam(value = "maTrangThai", defaultValue = "0") int maTrangThai
+            @RequestParam(value = "bookId", defaultValue = "0") int bookId,
+            @RequestParam(value = "bookName", defaultValue = "") String bookName,
+            @RequestParam(value = "author", defaultValue = "") String author,
+            @RequestParam(value = "publicationYear", defaultValue = "0") int publicationYear,
+            @RequestParam(value = "languageId", defaultValue = "0") int languageId,
+            @RequestParam(value = "categoryId", defaultValue = "0") int categoryId,
+            @RequestParam(value = "statusId", defaultValue = "0") int statusId
     ) {
-        BookRequest searchCondition = new BookRequest(maSach, tenSach, tacGia, namXuatBan, maNgonNgu, maTheLoai, maTrangThai, "");
+        BookRequest searchCondition = new BookRequest(bookId, bookName, author, publicationYear, languageId, categoryId, statusId, "");
         return bookRepository.getBooksByCondition(searchCondition);
     }
 

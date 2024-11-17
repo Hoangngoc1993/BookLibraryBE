@@ -1,90 +1,90 @@
 package com.java.BookLibraryBE.entity;
 
 public class BookRequest {
-    public int maSach;
-    public String tenSach;
-    public String tacGia;
-    public int namXuatBan;
-    public int maNgonNgu;
-    public int maTheLoai;
-    public int maTrangThai;
-    public String gioiThieu;
+    public int book_id;
+    public String book_name;
+    public String author;
+    public int publication_year;
+    public int language_id;
+    public int category_id;
+    public int status_id;
+    public String introducion;
 
     public BookRequest() {
     }
 
-    public BookRequest(int maSach, String tenSach, String tacGia, int namXuatBan, int maNgonNgu, int maTheLoai, int maTrangThai, String gioiThieu) {
-        this.maSach = maSach;
-        this.tenSach = tenSach;
-        this.tacGia = tacGia;
-        this.namXuatBan = namXuatBan;
-        this.maNgonNgu = maNgonNgu;
-        this.maTheLoai = maTheLoai;
-        this.maTrangThai = maTrangThai;
-        this.gioiThieu = gioiThieu;
+    public BookRequest(int book_id, String book_name, String author, int publication_year, int language_id, int category_id, int status_id, String introducion) {
+        this.book_id = book_id;
+        this.book_name = book_name;
+        this.author = author;
+        this.publication_year = publication_year;
+        this.language_id = language_id;
+        this.category_id = category_id;
+        this.status_id = status_id;
+        this.introducion = introducion;
     }
 
-    public int getMaSach() {
-        return maSach;
+    public int getBook_id() {
+        return book_id;
     }
 
-    public void setMaSach(int maSach) {
-        this.maSach = maSach;
+    public void setBook_id(int book_id) {
+        this.book_id = book_id;
     }
 
-    public String getTenSach() {
-        return tenSach;
+    public String getBook_name() {
+        return book_name;
     }
 
-    public void setTenSach(String tenSach) {
-        this.tenSach = tenSach;
+    public void setBook_name(String book_name) {
+        this.book_name = book_name;
     }
 
-    public String getTacGia() {
-        return tacGia;
+    public String getAuthor() {
+        return author;
     }
 
-    public void setTacGia(String tacGia) {
-        this.tacGia = tacGia;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
-    public int getNamXuatBan() {
-        return namXuatBan;
+    public int getPublication_year() {
+        return publication_year;
     }
 
-    public void setNamXuatBan(int namXuatBan) {
-        this.namXuatBan = namXuatBan;
+    public void setPublication_year(int publication_year) {
+        this.publication_year = publication_year;
     }
 
-    public int getMaNgonNgu() {
-        return maNgonNgu;
+    public int getLanguage_id() {
+        return language_id;
     }
 
-    public void setMaNgonNgu(int maNgonNgu) {
-        this.maNgonNgu = maNgonNgu;
+    public void setLanguage_id(int language_id) {
+        this.language_id = language_id;
     }
 
-    public int getMaTheLoai() {
-        return maTheLoai;
+    public int getCategory_id() {
+        return category_id;
     }
 
-    public void setMaTheLoai(int maTheLoai) {
-        this.maTheLoai = maTheLoai;
+    public void setCategory_id(int category_id) {
+        this.category_id = category_id;
     }
 
-    public int getMaTrangThai() {
-        return maTrangThai;
+    public int getStatus_id() {
+        return status_id;
     }
 
-    public void setMaTrangThai(int maTrangThai) {
-        this.maTrangThai = maTrangThai;
+    public void setStatus_id(int status_id) {
+        this.status_id = status_id;
     }
 
-    public String getGioiThieu() {
-        return gioiThieu;
+    public String getIntroducion() {
+        return introducion;
     }
 
-    public void setGioiThieu(String gioiThieu) {
-        this.gioiThieu = gioiThieu;
+    public void setIntroducion(String introducion) {
+        this.introducion = introducion;
     }
 }

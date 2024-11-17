@@ -6,43 +6,44 @@ import com.java.BookLibraryBE.entity.BookRequest;
 public class Utility {
     public static String searchSqlQuery(BookRequest searchBookCondition) {
         StringBuilder searchQuery = new StringBuilder("SELECT ");
-        searchQuery.append("SA.MA_SACH, SA.TEN_SACH, SA.TAC_GIA, NN.NGON_NGU, ")
-                .append("TL.THE_LOAI, SA.NAM_XUAT_BAN, TT.TRANG_THAI, SA.GIOI_THIEU ")
-                .append("FROM BOOK_LIBRARY.SACH SA ")
-                .append("INNER JOIN BOOK_LIBRARY.NGON_NGU NN ON SA.MA_NGON_NGU = NN.MA_NGON_NGU ")
-                .append("INNER JOIN BOOK_LIBRARY.TRANG_THAI TT ON SA.MA_TRANG_THAI = TT.MA_TRANG_THAI ")
-                .append("INNER JOIN BOOK_LIBRARY.THE_LOAI TL ON SA.MA_THE_LOAI = TL.MA_THE_LOAI ")
+        searchQuery.append("SA.BOOK_ID, SA.BOOK_NAME, SA.AUTHOR, NN.LANGUAGE, ")
+                .append("TL.CATEGORY, SA.PUBLICATION_YEAR, TT.STATUS, SA.INTRODUCION ")
+                .append("FROM BOOK_LIBRARY.BOOK SA ")
+                .append("INNER JOIN BOOK_LIBRARY.LANGUAGE NN ON SA.LANGUAGE_ID = NN.LANGUAGE_ID ")
+                .append("INNER JOIN BOOK_LIBRARY.STATUS TT ON SA.STATUS_ID = TT.STATUS_ID ")
+                .append("INNER JOIN BOOK_LIBRARY.CATEGORY TL ON SA.CATEGORY_ID = TL.CATEGORY_ID ")
                 .append("WHERE SA.DELETE_FLAG = 0");
-        if (searchBookCondition.getMaSach() != 0) {
-            searchQuery.append(" AND SA.MA_SACH = ");
-            searchQuery.append(searchBookCondition.getMaSach());
+        if (searchBookCondition.getBook_id() != 0) {
+            searchQuery.append(" AND SA.BOOK_ID = ");
+            searchQuery.append(searchBookCondition.getBook_id());
         }
-        if (searchBookCondition.getTenSach() != null && !searchBookCondition.getTenSach().isEmpty()) {
-            searchQuery.append(" AND SA.TEN_SACH LIKE '%");
-            searchQuery.append(searchBookCondition.getTenSach());
+        if (searchBookCondition.getBook_name() != null && !searchBookCondition.getBook_name().isEmpty()) {
+            searchQuery.append(" AND SA.BOOK_NAME LIKE '%");
+            searchQuery.append(searchBookCondition.getBook_name());
             searchQuery.append("%'");
         }
-        if (searchBookCondition.getTacGia() != null && !searchBookCondition.getTacGia().isEmpty()) {
-            searchQuery.append(" AND SA.TAC_GIA LIKE '%");
-            searchQuery.append(searchBookCondition.getTacGia());
+        if (searchBookCondition.getAuthor() != null && !searchBookCondition.getAuthor().isEmpty()) {
+            searchQuery.append(" AND SA.AUTHOR LIKE '%");
+            searchQuery.append(searchBookCondition.getAuthor());
             searchQuery.append("%'");
         }
-        if (searchBookCondition.getNamXuatBan() != 0) {
-            searchQuery.append(" AND SA.NAM_XUAT_BAN = ");
-            searchQuery.append(searchBookCondition.getNamXuatBan());
+        if (searchBookCondition.getPublication_year() != 0) {
+            searchQuery.append(" AND SA.PUBLICATION_YEAR = ");
+            searchQuery.append(searchBookCondition.getPublication_year());
         }
-        if (searchBookCondition.getMaNgonNgu() != 0) {
-            searchQuery.append(" AND SA.MA_NGON_NGU = ");
-            searchQuery.append(searchBookCondition.getMaNgonNgu());
+        if (searchBookCondition.getLanguage_id() != 0) {
+            searchQuery.append(" AND SA.LANGUAGE_ID = ");
+            searchQuery.append(searchBookCondition.getLanguage_id());
         }
-        if (searchBookCondition.getMaTheLoai() != 0) {
-            searchQuery.append(" AND SA.MA_THE_LOAI = ");
-            searchQuery.append(searchBookCondition.getMaTheLoai());
+        if (searchBookCondition.getCategory_id() != 0) {
+            searchQuery.append(" AND SA.CATEGORY_ID = ");
+            searchQuery.append(searchBookCondition.getCategory_id());
         }
-        if (searchBookCondition.getMaTrangThai() > -1) {
-            searchQuery.append(" AND SA.MA_TRANG_THAI = ");
-            searchQuery.append(searchBookCondition.getMaTrangThai());
+        if (searchBookCondition.getStatus_id() > -1) {
+            searchQuery.append(" AND SA.STATUS_ID = ");
+            searchQuery.append(searchBookCondition.getStatus_id());
         }
+        searchQuery.append(" ORDER BY SA.BOOK_ID");
         String result = searchQuery.toString();
         System.out.println(result);
         return result;
