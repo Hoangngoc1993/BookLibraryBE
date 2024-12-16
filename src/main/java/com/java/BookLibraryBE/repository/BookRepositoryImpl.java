@@ -12,17 +12,17 @@ import java.util.List;
 
 @Repository
 public class BookRepositoryImpl implements BookRepository {
-    public static final String INSERT_BOOK_QUERY = "INSERT INTO BOOK_LIBRARY.SACH "
-            + "(MA_SACH, TEN_SACH, TAC_GIA, NAM_XUAT_BAN, MA_NGON_NGU, MA_THE_LOAI, MA_TRANG_THAI, GIOI_THIEU, DELETE_FLAG, NGAY_GIO_CAP_NHAT)"
+    public static final String INSERT_BOOK_QUERY = "INSERT INTO BOOK_LIBRARY.BOOK "
+            + "(BOOK_ID, BOOK_NAME, AUTHOR, PUBLICATION_YEAR, LANGUAGE_ID, CATEGORY_ID, STATUS_ID, INTRODUCION, DELETE_FLAG, UPDATE_TIME)"
             + "VALUES(?,?,?,?,?,?,?,?,?,SYSDATE(6))";
-    public static final String UPDATE_BOOK_QUERY = "UPDATE BOOK_LIBRARY.SACH "
-            + "SET TEN_SACH = ?, TAC_GIA = ?, NAM_XUAT_BAN = ?, "
-            + "MA_NGON_NGU = ?, MA_THE_LOAI = ?, MA_TRANG_THAI = ?,"
-            + "GIOI_THIEU = ?, NGAY_GIO_CAP_NHAT = SYSDATE(6) WHERE MA_SACH = ?";
-    public static final String DELETE_BOOK_BY_ID_QUERY = "UPDATE BOOK_LIBRARY.SACH "
-            + "SET DELETE_FLAG = 1, NGAY_GIO_CAP_NHAT = SYSDATE(6) WHERE MA_SACH = ?";
-    public static final String GET_BOOKS_BY_ID_QUERY = "SELECT * FROM BOOK_LIBRARY.SACH "
-            + "WHERE DELETE_FLAG = 0 AND MA_SACH = ?";
+    public static final String UPDATE_BOOK_QUERY = "UPDATE BOOK_LIBRARY.BOOK "
+            + "SET BOOK_NAME = ?, AUTHOR = ?, PUBLICATION_YEAR = ?, "
+            + "LANGUAGE_ID = ?, CATEGORY_ID = ?, STATUS_ID = ?, "
+            + "INTRODUCION = ?, UPDATE_TIME = SYSDATE(6) WHERE BOOK_ID = ?";
+    public static final String DELETE_BOOK_BY_ID_QUERY = "UPDATE BOOK_LIBRARY.BOOK "
+            + "SET DELETE_FLAG = 1, UPDATE_TIME = SYSDATE(6) WHERE BOOK_ID = ?";
+    public static final String GET_BOOKS_BY_ID_QUERY = "SELECT * FROM BOOK_LIBRARY.BOOK "
+            + "WHERE DELETE_FLAG = 0 AND BOOK_ID = ?";
     public static String GET_BOOKS_BY_CONDITION_QUERY = "";
 
     @Autowired
@@ -33,14 +33,14 @@ public class BookRepositoryImpl implements BookRepository {
         System.out.println("Add Book - RepositoryIpml");
         jdbcTemplate.update(
                 INSERT_BOOK_QUERY,
-                book.getMaSach(),
-                book.getTenSach(),
-                book.getTacGia(),
-                book.getNamXuatBan(),
-                book.getMaNgonNgu(),
-                book.getMaTheLoai(),
-                book.getMaTrangThai(),
-                book.getGioiThieu(),
+                book.getBook_id(),
+                book.getBook_name(),
+                book.getAuthor(),
+                book.getPublication_year(),
+                book.getLanguage_id(),
+                book.getCategory_id(),
+                book.getStatus_id(),
+                book.getIntroducion(),
                 0);
         return "Book has been created";
     }
@@ -48,18 +48,28 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public String updateBook(BookRequest book) {
         System.out.println("Update Book - RepositoryIpml");
-        jdbcTemplate.update(
-                UPDATE_BOOK_QUERY,
-                book.getTenSach(),
-                book.getTacGia(),
-                book.getNamXuatBan(),
-                book.getMaNgonNgu(),
-                book.getMaTheLoai(),
-                book.getMaTrangThai(),
-                book.getGioiThieu(),
-                book.getMaSach()
+        String CHECK_CONFLICT = "SELECT COUNT(*) FROM BOOK WHERE BOOK_ID = ? AND UPDATE_TIME = ?";
+        int count = jdbcTemplate.queryForObject(
+                CHECK_CONFLICT,
+                new Object[]{book.getBook_id(), book.getUpdate_time()},
+                Integer.class
         );
-        return "Book has been updated";
+        if (count > 0){
+            jdbcTemplate.update(
+                    UPDATE_BOOK_QUERY,
+                    book.getBook_name(),
+                    book.getAuthor(),
+                    book.getPublication_year(),
+                    book.getLanguage_id(),
+                    book.getCategory_id(),
+                    book.getStatus_id(),
+                    book.getIntroducion(),
+                    book.getBook_id()
+            );
+            return "Updated successfully";
+        } else {
+            return "Update failed";
+        }
     }
 
     @Override
@@ -73,15 +83,15 @@ public class BookRepositoryImpl implements BookRepository {
     public Book getBookById(int id) {
         return jdbcTemplate.queryForObject(GET_BOOKS_BY_ID_QUERY, new Object[]{id}, (rs, rowNum) -> {
             return new Book(
-                    rs.getInt("ma_sach"),
-                    rs.getString("ten_sach"),
-                    rs.getString("tac_gia"),
-                    rs.getInt("nam_xuat_ban"),
-                    rs.getInt("ma_ngon_ngu"),
-                    rs.getInt("ma_the_loai"),
-                    rs.getInt("ma_trang_thai"),
-                    rs.getString("gioi_thieu"),
-                    rs.getTimestamp("ngay_gio_cap_nhat").toLocalDateTime(),
+                    rs.getInt("BOOK_ID"),
+                    rs.getString("BOOK_NAME"),
+                    rs.getString("AUTHOR"),
+                    rs.getInt("PUBLICATION_YEAR"),
+                    rs.getInt("LANGUAGE_ID"),
+                    rs.getInt("CATEGORY_ID"),
+                    rs.getInt("STATUS_ID"),
+                    rs.getString("INTRODUCION"),
+                    rs.getTimestamp("UPDATE_TIME").toLocalDateTime(),
                     0
             );
         });
@@ -92,14 +102,14 @@ public class BookRepositoryImpl implements BookRepository {
         GET_BOOKS_BY_CONDITION_QUERY = Utility.searchSqlQuery(searchBookCondition);
         return jdbcTemplate.query(GET_BOOKS_BY_CONDITION_QUERY, (rs, rowNum) -> {
             return new BookResponse(
-                    rs.getInt("MA_SACH"),
-                    rs.getString("TEN_SACH"),
-                    rs.getString("TAC_GIA"),
-                    rs.getInt("NAM_XUAT_BAN"),
-                    rs.getString("NGON_NGU"),
-                    rs.getString("THE_LOAI"),
-                    rs.getString("TRANG_THAI"),
-                    rs.getString("GIOI_THIEU")
+                    rs.getInt("BOOK_ID"),
+                    rs.getString("BOOK_NAME"),
+                    rs.getString("AUTHOR"),
+                    rs.getInt("PUBLICATION_YEAR"),
+                    rs.getString("LANGUAGE"),
+                    rs.getString("CATEGORY"),
+                    rs.getString("STATUS"),
+                    rs.getString("INTRODUCION")
             );
         });
     }
