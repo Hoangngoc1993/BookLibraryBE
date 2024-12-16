@@ -53,6 +53,16 @@ public class BookRepositoryImpl implements BookRepository {
                 CHECK_CONFLICT,
                 new Object[]{book.getBook_id(), book.getUpdate_time()},
                 Integer.class
+        jdbcTemplate.update(
+                UPDATE_BOOK_QUERY,
+                book.getBook_name(),
+                book.getAuthor(),
+                book.getPublication_year(),
+                book.getLanguage_id(),
+                book.getCategory_id(),
+                book.getStatus_id(),
+                book.getIntroducion(),
+                book.getBook_id()
         );
         if (count > 0){
             jdbcTemplate.update(
