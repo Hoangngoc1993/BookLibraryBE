@@ -48,6 +48,11 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public String updateBook(BookRequest book) {
         System.out.println("Update Book - RepositoryIpml");
+        String CHECK_CONFLICT = "SELECT COUNT(*) FROM BOOK WHERE BOOK_ID = ? AND UPDATE_TIME = ?";
+        int count = jdbcTemplate.queryForObject(
+                CHECK_CONFLICT,
+                new Object[]{book.getBook_id(), book.getUpdate_time()},
+                Integer.class
         jdbcTemplate.update(
                 UPDATE_BOOK_QUERY,
                 book.getBook_name(),
@@ -59,7 +64,22 @@ public class BookRepositoryImpl implements BookRepository {
                 book.getIntroducion(),
                 book.getBook_id()
         );
-        return "Book has been updated";
+        if (count > 0){
+            jdbcTemplate.update(
+                    UPDATE_BOOK_QUERY,
+                    book.getBook_name(),
+                    book.getAuthor(),
+                    book.getPublication_year(),
+                    book.getLanguage_id(),
+                    book.getCategory_id(),
+                    book.getStatus_id(),
+                    book.getIntroducion(),
+                    book.getBook_id()
+            );
+            return "Updated successfully";
+        } else {
+            return "Update failed";
+        }
     }
 
     @Override

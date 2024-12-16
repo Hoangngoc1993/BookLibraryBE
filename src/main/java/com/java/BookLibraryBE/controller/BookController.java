@@ -42,7 +42,7 @@ public class BookController {
             @RequestParam(value = "categoryId", defaultValue = "0") int categoryId,
             @RequestParam(value = "statusId", defaultValue = "0") int statusId
     ) {
-        BookRequest searchCondition = new BookRequest(bookId, bookName, author, publicationYear, languageId, categoryId, statusId, "");
+        BookRequest searchCondition = new BookRequest(bookId, bookName, author, publicationYear, languageId, categoryId, statusId, "", null);
         return bookRepository.getBooksByCondition(searchCondition);
     }
 
